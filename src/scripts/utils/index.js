@@ -112,7 +112,16 @@ export async function registerServiceWorker() {
   }
 
   try {
-    const registration = await navigator.serviceWorker.register('/sw.bundle.js');
+    // Use the correct path based on your deployment environment
+    // This will work for both local development and GitHub Pages
+    const swPath = location.pathname.endsWith("/")
+      ? "sw.bundle.js"
+      : `${location.pathname.substring(
+          0,
+          location.pathname.lastIndexOf("/") + 1
+        )}sw.bundle.js`;
+
+    const registration = await navigator.serviceWorker.register(swPath);
     console.log("Service worker telah terpasang", registration);
   } catch (error) {
     console.log("Failed to install service worker:", error);
